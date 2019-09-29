@@ -13,7 +13,7 @@ localhost:8082/hotel
 The car service has exposed rest endpoint (Spring) only for testing. 
 http://localhost:8085/car
 
-GOAL: The hotel service using car service during reservation and the LRA should be propagated to the car service by axon-connector module
+GOAL: The hotel service using car service during reservation and the LRA should be propagated to the car service by axon-connector module ([lra-axon-connector](https://github.com/mkralik3/lra-axon-connector)).
  
  # How to run
 ```
