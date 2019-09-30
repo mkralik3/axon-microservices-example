@@ -1,6 +1,6 @@
 package org.mkralik.learning.axon.microservices.api.car.command;
 
-import org.mkralik.learning.axon.microservices.model.Booking;
+import org.mkralik.learning.axon.microservices.api.BookingStatus;
 import lombok.Value;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
@@ -10,7 +10,6 @@ public class CreateCarCmd {
     @TargetAggregateIdentifier
     private String id;
     private String name;
-    private Booking.BookingStatus status = Booking.BookingStatus.PROVISIONAL;
+    private BookingStatus status = BookingStatus.PROVISIONAL;
     private String type;
-    private Booking[] details = null;
 }

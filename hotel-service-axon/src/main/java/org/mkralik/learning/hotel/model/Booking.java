@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.mkralik.learning.axon.microservices.model;
+package org.mkralik.learning.hotel.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,6 +28,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.mkralik.learning.axon.microservices.api.BookingStatus;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -215,7 +216,4 @@ public class Booking {
         return result;
     }
 
-    public enum BookingStatus {
-        CONFIRMED, CANCELLED, PROVISIONAL, CONFIRMING, CANCEL_REQUESTED
-    }
 }

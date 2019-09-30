@@ -1,8 +1,8 @@
 package org.mkralik.learning.axon.microservices;
 
-import org.mkralik.learning.axon.microservices.model.BookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.car.query.AllCarBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.car.query.CarBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.model.Booking;
-import org.mkralik.learning.axon.microservices.model.AllBookingSummaryQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
@@ -31,11 +31,11 @@ public class CarEndpoints {
 
     @GetMapping
     public Collection<Booking> getAll() {
-        return queryGateway.query(new AllBookingSummaryQuery(), ResponseTypes.multipleInstancesOf(Booking.class)).join();
+        return queryGateway.query(new AllCarBookingSummaryQuery(), ResponseTypes.multipleInstancesOf(Booking.class)).join();
     }
 
     private Booking getBookingFromQueryBus(String lraId) {
-        Booking join = queryGateway.query(new BookingSummaryQuery(lraId),
+        Booking join = queryGateway.query(new CarBookingSummaryQuery(lraId),
                 ResponseTypes.instanceOf(Booking.class))
                 .join();
         log.debug("returned class is {}", join);

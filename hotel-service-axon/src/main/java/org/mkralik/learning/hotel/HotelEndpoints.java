@@ -1,9 +1,9 @@
 package org.mkralik.learning.hotel;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompleteHotelCmd;
-import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
@@ -11,9 +11,10 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.eclipse.microprofile.lra.annotation.Compensate;
 import org.eclipse.microprofile.lra.annotation.Complete;
 import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
-import org.mkralik.learning.axon.microservices.model.AllBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.model.Booking;
-import org.mkralik.learning.axon.microservices.model.BookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
+import org.mkralik.learning.axon.microservices.api.hotel.query.AllHotelBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.hotel.query.HotelBookingSummaryQuery;
+import org.mkralik.learning.hotel.model.Booking;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -41,6 +42,7 @@ public class HotelEndpoints {
     public Booking bookRoom(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId,
                             @QueryParam("hotelName") @DefaultValue("Default") String hotelName) throws InterruptedException {
         cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel"));
+        cmdGateway.sendAndWait(new CreateCarCmd(lraId, hotelName, "Car"));
         Thread.sleep(500);
         return getBookingFromQueryBus(lraId);
     }
@@ -78,11 +80,11 @@ public class HotelEndpoints {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<Booking> getAll() {
-        return queryGateway.query(new AllBookingSummaryQuery(), ResponseTypes.multipleInstancesOf(Booking.class)).join();
+        return queryGateway.query(new AllHotelBookingSummaryQuery(), ResponseTypes.multipleInstancesOf(Booking.class)).join();
     }
 
     private Booking getBookingFromQueryBus(String lraId) {
-        Booking join = queryGateway.query(new BookingSummaryQuery(lraId),
+        Booking join = queryGateway.query(new HotelBookingSummaryQuery(lraId),
                 ResponseTypes.instanceOf(Booking.class))
                 .join();
         log.debug("returned class is {}", join);

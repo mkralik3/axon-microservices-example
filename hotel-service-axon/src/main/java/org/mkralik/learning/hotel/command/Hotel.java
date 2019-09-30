@@ -1,11 +1,11 @@
 package org.mkralik.learning.hotel.command;
 
+import org.mkralik.learning.axon.microservices.api.BookingStatus;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompleteHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.event.ChangedHotelStateEvent;
 import org.mkralik.learning.axon.microservices.api.hotel.event.CreatedHotelEvent;
-import org.mkralik.learning.axon.microservices.model.Booking;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
@@ -23,9 +23,8 @@ public class Hotel {
     @AggregateIdentifier
     private String id;
     private String name;
-    private Booking.BookingStatus status;
+    private BookingStatus status;
     private String type;
-    private Booking[] details;
 
     @CommandHandler
     public Hotel(CreateHotelCmd cmd){
@@ -54,7 +53,6 @@ public class Hotel {
         name = evt.getName();
         status = evt.getStatus();
         type = evt.getType();
-        details = evt.getDetails();
     }
 
     @EventSourcingHandler

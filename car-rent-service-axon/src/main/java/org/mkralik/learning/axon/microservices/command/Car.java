@@ -1,8 +1,6 @@
 package org.mkralik.learning.axon.microservices.command;
 
-import org.mkralik.learning.axon.microservices.api.car.command.CompensateCarCmd;
-import org.mkralik.learning.axon.microservices.api.car.command.CompleteCarCmd;
-import org.mkralik.learning.axon.microservices.model.Booking;
+import org.mkralik.learning.axon.microservices.api.BookingStatus;
 import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
 import org.mkralik.learning.axon.microservices.api.car.event.ChangedCarStateEvent;
 import org.mkralik.learning.axon.microservices.api.car.event.CreatedCarEvent;
@@ -23,9 +21,8 @@ public class Car {
     @AggregateIdentifier
     private String id;
     private String name;
-    private Booking.BookingStatus status;
+    private BookingStatus status;
     private String type;
-    private Booking[] details;
 
     @CommandHandler
     public Car(CreateCarCmd cmd){
@@ -33,19 +30,21 @@ public class Car {
         apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getType()));
     }
 
-    @CommandHandler
-    public void handle(CompleteCarCmd cmd){
-        log.debug("handling {}", cmd);
-        //do some validation
-        apply(new ChangedCarStateEvent(cmd.getId(), cmd.getStatus()));
-    }
-
-    @CommandHandler
-    public void handle(CompensateCarCmd cmd){
-        log.debug("handling {}", cmd);
-        //do some validation
-        apply(new ChangedCarStateEvent(cmd.getId(), cmd.getStatus()));
-    }
+//    @CommandHandler
+//    public boolean handle(AxonLraCompensateCommand cmd){
+//        log.debug("Someone wants to compensate {}", cmd);
+//        //do some validation
+//        apply(new ChangedCarStateEvent(cmd.getId(), BookingStatus.CANCELLED));
+//        return true;
+//    }
+//
+//    @CommandHandler
+//    public boolean handle(AxonLraCompleteCommand cmd){
+//        log.debug("Someone wants to complete {}", cmd);
+//        //do some validation
+//        apply(new ChangedCarStateEvent(cmd.getId(), BookingStatus.CONFIRMED));
+//        return true;
+//    }
 
     @EventSourcingHandler
     public void on(CreatedCarEvent evt){
@@ -54,7 +53,6 @@ public class Car {
         name = evt.getName();
         status = evt.getStatus();
         type = evt.getType();
-        details = evt.getDetails();
     }
 
     @EventSourcingHandler
