@@ -1,14 +1,14 @@
-package org.mkralik.learning.hotel.query;
+package org.mkralik.learning.axon.microservices.car.query;
 
-import org.mkralik.learning.axon.microservices.api.hotel.event.ChangedHotelStateEvent;
-import org.mkralik.learning.axon.microservices.api.hotel.event.CreatedHotelEvent;
+import org.mkralik.learning.axon.microservices.api.car.query.AllCarBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.car.query.CarBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.car.model.Booking;
+import org.mkralik.learning.axon.microservices.api.car.event.ChangedCarStateEvent;
+import org.mkralik.learning.axon.microservices.api.car.event.CreatedCarEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
-import org.mkralik.learning.axon.microservices.api.hotel.query.AllHotelBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.api.hotel.query.HotelBookingSummaryQuery;
-import org.mkralik.learning.hotel.model.Booking;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -21,31 +21,31 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class HotelProjection {
+public class CarProjection {
 
     private final EntityManager em;
 
     @EventHandler
-    public void on(CreatedHotelEvent evt){
+    public void on(CreatedCarEvent evt){
         log.debug("projecting CreatedHotelEvent {}", evt);
-        em.persist(new Booking(evt.getId().toString(), evt.getName(), evt.getType(), evt.getStatus(), null));
+        em.persist(new Booking(evt.getId(), evt.getName(), evt.getType(), evt.getStatus(), null));
         em.flush();
     }
 
     @EventHandler
-    public void on(ChangedHotelStateEvent evt){
+    public void on(ChangedCarStateEvent evt){
         log.debug("projecting ChangedHotelStateEvent {}", evt);
         em.find(Booking.class, evt.getId()).setStatus(evt.getStatus());
         em.flush();
     }
 
     @QueryHandler
-    public Booking handle(HotelBookingSummaryQuery qry){
+    public Booking handle(CarBookingSummaryQuery qry){
         return em.find(Booking.class, qry.getId());
     }
 
     @QueryHandler
-    public List<Booking> handle(AllHotelBookingSummaryQuery qry){
+    public List<Booking> handle(AllCarBookingSummaryQuery qry){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Booking> cq = cb.createQuery(Booking.class);
         Root<Booking> rootEntry = cq.from(Booking.class);

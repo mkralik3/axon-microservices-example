@@ -1,4 +1,4 @@
-package org.mkralik.learning.hotel;
+package org.mkralik.learning.axon.microservices.hotel;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.wadl.internal.WadlResource;

@@ -1,4 +1,4 @@
-package org.mkralik.learning.axon.microservices.command;
+package org.mkralik.learning.axon.microservices.car.command;
 
 import org.mkralik.learning.axon.microservices.api.BookingStatus;
 import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;

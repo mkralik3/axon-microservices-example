@@ -1,4 +1,4 @@
-package org.mkralik.learning.hotel;
+package org.mkralik.learning.axon.microservices.hotel;
 
 import io.narayana.lra.client.NarayanaLRAClient;
 import org.springframework.context.annotation.Bean;

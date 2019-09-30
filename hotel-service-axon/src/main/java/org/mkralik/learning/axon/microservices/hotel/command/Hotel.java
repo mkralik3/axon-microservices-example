@@ -1,4 +1,4 @@
-package org.mkralik.learning.hotel.command;
+package org.mkralik.learning.axon.microservices.hotel.command;
 
 import org.mkralik.learning.axon.microservices.api.BookingStatus;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;

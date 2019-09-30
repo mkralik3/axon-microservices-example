@@ -1,4 +1,4 @@
-package org.mkralik.learning.hotel;
+package org.mkralik.learning.axon.microservices.hotel;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
@@ -14,7 +14,7 @@ import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.query.AllHotelBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.query.HotelBookingSummaryQuery;
-import org.mkralik.learning.hotel.model.Booking;
+import org.mkralik.learning.axon.microservices.hotel.model.Booking;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
