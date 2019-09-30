@@ -26,7 +26,7 @@ public class CarProjection {
     @EventHandler
     public void on(CreatedCarEvent evt){
         log.debug("projecting CreatedCarEvent {}", evt);
-        bookings.put(evt.getId(), new Booking(evt.getId().toString(), evt.getName(), evt.getType(), evt.getStatus(), evt.getDetails()));
+        bookings.put(evt.getId(), new Booking(evt.getId(), evt.getName(), evt.getStatus(), evt.getType(), evt.getDetails()));
     }
 
     @EventHandler

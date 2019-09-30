@@ -4,6 +4,8 @@ import org.mkralik.learning.axon.microservices.api.Booking;
 import lombok.Value;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
+import java.util.List;
+
 @Value
 public class CreateCarCmd {
 
@@ -12,5 +14,5 @@ public class CreateCarCmd {
     private String name;
     private Booking.BookingStatus status = Booking.BookingStatus.PROVISIONAL;
     private String type;
-    private Booking[] details;
+    private List<Booking> details;
 }

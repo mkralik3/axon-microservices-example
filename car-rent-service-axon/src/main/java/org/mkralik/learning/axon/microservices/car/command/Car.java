@@ -11,6 +11,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
+import java.util.List;
+
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate
@@ -23,7 +25,7 @@ public class Car {
     private String name;
     private Booking.BookingStatus status;
     private String type;
-    private Booking[] details;
+    private List<Booking> details;
 
     @CommandHandler
     public Car(CreateCarCmd cmd){

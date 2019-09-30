@@ -23,7 +23,7 @@ public class HotelProjection {
     @EventHandler
     public void on(CreatedHotelEvent evt){
         log.debug("projecting CreatedHotelEvent {}", evt);
-        bookings.put(evt.getId(), new Booking(evt.getId().toString(), evt.getName(), evt.getType(), evt.getStatus(), evt.getDetails()));
+        bookings.put(evt.getId(), new Booking(evt.getId(), evt.getName(), evt.getStatus(), evt.getType(), evt.getDetails()));
     }
 
     @EventHandler

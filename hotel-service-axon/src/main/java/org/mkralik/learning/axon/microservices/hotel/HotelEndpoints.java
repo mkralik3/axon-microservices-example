@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.eclipse.microprofile.lra.annotation.ws.rs.LRA.LRA_HTTP_CONTEXT_HEADER;
@@ -40,7 +41,7 @@ public class HotelEndpoints {
     @LRA(value = LRA.Type.REQUIRED, end = false)
     public Booking bookRoom(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId,
                             @QueryParam("hotelName") @DefaultValue("Default") String hotelName) throws InterruptedException {
-        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", null));
+        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", new ArrayList<>()));
 //        cmdGateway.sendAndWait(new CreateCarCmd(lraId, hotelName, "Car", null));
         Thread.sleep(500);
         return getBookingFromQueryBus(lraId);

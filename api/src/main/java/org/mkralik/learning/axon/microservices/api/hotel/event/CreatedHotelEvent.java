@@ -3,6 +3,8 @@ package org.mkralik.learning.axon.microservices.api.hotel.event;
 import lombok.Value;
 import org.mkralik.learning.axon.microservices.api.Booking;
 
+import java.util.List;
+
 @Value
 public class CreatedHotelEvent {
 
@@ -10,5 +12,5 @@ public class CreatedHotelEvent {
     private String name;
     private Booking.BookingStatus status = Booking.BookingStatus.PROVISIONAL;
     private String type;
-    private Booking[] details;
+    private List<Booking> details;
 }
