@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -46,8 +47,9 @@ public class HotelEndpoints {
     public Booking bookRoom(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId,
                             @QueryParam("hotelName") @DefaultValue("Default") String hotelName) throws InterruptedException {
         //two aggregates cannot the same ID even though they are a different type
-        String carId = lraId+"CAR";
-        cmdGateway.sendAndWait(new CreateCarCmd(carId, hotelName, "Car"));
+//        String carId = lraId + "CAR";
+        String carId = "testCar";
+        cmdGateway.sendAndWait(new CreateCarCmd(carId, URI.create(lraId), hotelName, "Car"));
         Thread.sleep(500);
         Booking car = queryGateway.query(new CarBookingSummaryQuery(carId),
                 ResponseTypes.instanceOf(Booking.class))
@@ -65,7 +67,6 @@ public class HotelEndpoints {
     public Response completeWork(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId) throws NotFoundException, InterruptedException, JsonProcessingException {
         log.info("Complete work in Axon hotel service");
         cmdGateway.sendAndWait(new CompleteHotelCmd(lraId));
-        cmdGateway.sendAndWait(new CompleteCarCmd(lraId+"CAR"));
         Thread.sleep(500);
         return Response.ok(getBookingFromQueryBus(lraId).toJson()).build();
     }
@@ -77,7 +78,6 @@ public class HotelEndpoints {
     public Response compensateWork(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId) throws NotFoundException, InterruptedException, JsonProcessingException {
         log.info("Compensate work in Axon hotel service");
         cmdGateway.sendAndWait(new CompensateHotelCmd(lraId));
-        cmdGateway.sendAndWait(new CompensateCarCmd(lraId+"CAR"));
         Thread.sleep(500);
         return Response.ok(getBookingFromQueryBus(lraId).toJson()).build();
     }

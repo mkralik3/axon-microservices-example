@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 public class CarProjection {
 
-    @Inject
+    @Autowired
     private CommandGateway cmdGateway;
 
     private Map<String, Booking> bookings = new HashMap<>();

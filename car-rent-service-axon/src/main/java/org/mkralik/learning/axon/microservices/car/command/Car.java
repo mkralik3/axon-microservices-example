@@ -12,6 +12,8 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.mkralik.learning.lra.axon.api.AxonLraCompensateCommand;
+import org.mkralik.learning.lra.axon.api.AxonLraCompleteCommand;
 
 import java.util.List;
 
@@ -35,17 +37,19 @@ public class Car {
     }
 
     @CommandHandler
-    public void handle(CompleteCarCmd cmd){
-        log.debug("handling {}", cmd);
+    public boolean handle(AxonLraCompensateCommand cmd){
+        log.debug("Someone wants to compensate {}", cmd);
         //do some validation
-        apply(new ChangedCarStateEvent(cmd.getId(), cmd.getStatus()));
+        apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CANCELLED));
+        return true;
     }
 
     @CommandHandler
-    public void handle(CompensateCarCmd cmd){
-        log.debug("handling {}", cmd);
+    public boolean handle(AxonLraCompleteCommand cmd){
+        log.debug("Someone wants to complete {}", cmd);
         //do some validation
-        apply(new ChangedCarStateEvent(cmd.getId(), cmd.getStatus()));
+        apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMED));
+        return true;
     }
 
     @EventSourcingHandler
