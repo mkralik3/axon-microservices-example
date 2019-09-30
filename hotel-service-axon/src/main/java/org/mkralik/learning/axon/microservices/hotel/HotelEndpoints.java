@@ -1,7 +1,7 @@
 package org.mkralik.learning.axon.microservices.hotel;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
+import org.mkralik.learning.axon.microservices.api.Booking;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompleteHotelCmd;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.query.AllHotelBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.query.HotelBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.hotel.model.Booking;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -41,8 +40,8 @@ public class HotelEndpoints {
     @LRA(value = LRA.Type.REQUIRED, end = false)
     public Booking bookRoom(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId,
                             @QueryParam("hotelName") @DefaultValue("Default") String hotelName) throws InterruptedException {
-        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel"));
-        cmdGateway.sendAndWait(new CreateCarCmd(lraId, hotelName, "Car"));
+        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", null));
+//        cmdGateway.sendAndWait(new CreateCarCmd(lraId, hotelName, "Car", null));
         Thread.sleep(500);
         return getBookingFromQueryBus(lraId);
     }

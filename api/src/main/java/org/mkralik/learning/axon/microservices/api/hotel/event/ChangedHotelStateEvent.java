@@ -1,10 +1,10 @@
 package org.mkralik.learning.axon.microservices.api.hotel.event;
 
-import org.mkralik.learning.axon.microservices.api.BookingStatus;
+import org.mkralik.learning.axon.microservices.api.Booking;
 import lombok.Value;
 
 @Value
 public class ChangedHotelStateEvent {
     private String id;
-    private BookingStatus status;
+    private Booking.BookingStatus status;
 }

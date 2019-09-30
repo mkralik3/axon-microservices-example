@@ -1,6 +1,6 @@
 package org.mkralik.learning.axon.microservices.car.command;
 
-import org.mkralik.learning.axon.microservices.api.BookingStatus;
+import org.mkralik.learning.axon.microservices.api.Booking;
 import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
 import org.mkralik.learning.axon.microservices.api.car.event.ChangedCarStateEvent;
 import org.mkralik.learning.axon.microservices.api.car.event.CreatedCarEvent;
@@ -21,13 +21,14 @@ public class Car {
     @AggregateIdentifier
     private String id;
     private String name;
-    private BookingStatus status;
+    private Booking.BookingStatus status;
     private String type;
+    private Booking[] details;
 
     @CommandHandler
     public Car(CreateCarCmd cmd){
         log.debug("handling {}", cmd);
-        apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getType()));
+        apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getType(), cmd.getDetails()));
     }
 
 //    @CommandHandler
@@ -53,6 +54,7 @@ public class Car {
         name = evt.getName();
         status = evt.getStatus();
         type = evt.getType();
+        details = evt.getDetails();
     }
 
     @EventSourcingHandler

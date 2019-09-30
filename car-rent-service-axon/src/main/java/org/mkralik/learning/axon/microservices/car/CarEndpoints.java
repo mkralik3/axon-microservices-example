@@ -1,35 +1,38 @@
 package org.mkralik.learning.axon.microservices.car;
 
+import org.mkralik.learning.axon.microservices.api.Booking;
 import org.mkralik.learning.axon.microservices.api.car.query.AllCarBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.car.query.CarBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.car.model.Booking;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 
 @Service
-@RequestMapping("/car")
+@Path("/car")
 @Slf4j
-@RestController
 public class CarEndpoints {
 
     @Autowired
     private QueryGateway queryGateway;
 
-    @GetMapping("/{bookingId}")
-    public Booking getBooking(@PathVariable("bookingId") String bookingId) {
+    @GET
+    @Path("{bookingId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Booking getBooking(@PathParam("bookingId") String bookingId) {
         return getBookingFromQueryBus(bookingId);
     }
 
-    @GetMapping
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Collection<Booking> getAll() {
         return queryGateway.query(new AllCarBookingSummaryQuery(), ResponseTypes.multipleInstancesOf(Booking.class)).join();
     }

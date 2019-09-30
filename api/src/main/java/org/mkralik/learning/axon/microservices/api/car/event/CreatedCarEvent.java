@@ -1,13 +1,14 @@
 package org.mkralik.learning.axon.microservices.api.car.event;
 
-import org.mkralik.learning.axon.microservices.api.BookingStatus;
 import lombok.Value;
+import org.mkralik.learning.axon.microservices.api.Booking;
 
 @Value
 public class CreatedCarEvent {
 
     private String id;
     private String name;
-    private BookingStatus status = BookingStatus.PROVISIONAL;
+    private Booking.BookingStatus status = Booking.BookingStatus.PROVISIONAL;
     private String type;
+    private Booking[] details;
 }

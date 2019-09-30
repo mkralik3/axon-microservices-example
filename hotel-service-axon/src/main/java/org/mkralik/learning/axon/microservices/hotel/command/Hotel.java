@@ -1,6 +1,6 @@
 package org.mkralik.learning.axon.microservices.hotel.command;
 
-import org.mkralik.learning.axon.microservices.api.BookingStatus;
+import org.mkralik.learning.axon.microservices.api.Booking;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompleteHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
@@ -23,13 +23,14 @@ public class Hotel {
     @AggregateIdentifier
     private String id;
     private String name;
-    private BookingStatus status;
+    private Booking.BookingStatus status;
     private String type;
+    private Booking[] details;
 
     @CommandHandler
     public Hotel(CreateHotelCmd cmd){
         log.debug("handling {}", cmd);
-        apply(new CreatedHotelEvent(cmd.getId(), cmd.getName(), cmd.getType()));
+        apply(new CreatedHotelEvent(cmd.getId(), cmd.getName(), cmd.getType(), cmd.getDetails()));
     }
 
     @CommandHandler

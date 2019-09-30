@@ -1,25 +1,4 @@
-/*
- * JBoss, Home of Professional Open Source.
- * Copyright 2017, Red Hat, Inc., and individual contributors
- * as indicated by the @author tags. See the copyright.txt file in the
- * distribution for a full listing of individual contributors.
- *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */
-package org.mkralik.learning.axon.microservices.hotel.model;
+package org.mkralik.learning.axon.microservices.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,13 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.mkralik.learning.axon.microservices.api.BookingStatus;
+import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
@@ -44,25 +18,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
 public class Booking {
-
-    @Id
     @JsonProperty("id")
     private String id;
-
     @JsonProperty("name")
     private String name;
-
-    @Enumerated(value = EnumType.STRING)
     @JsonProperty("status")
     private BookingStatus status;
-
     @JsonProperty("type")
     private String type;
-
     @JsonProperty("details")
     private Booking[] details;
 
@@ -216,4 +180,7 @@ public class Booking {
         return result;
     }
 
+    public enum BookingStatus {
+        CONFIRMED, CANCELLED, PROVISIONAL, CONFIRMING, CANCEL_REQUESTED
+    }
 }
