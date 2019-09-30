@@ -1,5 +1,6 @@
 package org.mkralik.learning.axon.microservices.car.query;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.mkralik.learning.axon.microservices.api.Booking;
 import org.mkralik.learning.axon.microservices.api.car.query.AllCarBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.car.query.CarBookingSummaryQuery;
@@ -11,6 +12,7 @@ import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +23,15 @@ import java.util.Map;
 @Slf4j
 public class CarProjection {
 
+    @Inject
+    private CommandGateway cmdGateway;
+
     private Map<String, Booking> bookings = new HashMap<>();
 
     @EventHandler
     public void on(CreatedCarEvent evt){
         log.debug("projecting CreatedCarEvent {}", evt);
-        bookings.put(evt.getId(), new Booking(evt.getId().toString(), evt.getName(), evt.getType(), evt.getStatus(), evt.getDetails()));
+        bookings.put(evt.getId(), new Booking(evt.getId(), evt.getName(), evt.getStatus(), evt.getType(), null));
     }
 
     @EventHandler

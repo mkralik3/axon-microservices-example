@@ -1,6 +1,9 @@
 package org.mkralik.learning.axon.microservices.hotel.query;
 
+import org.axonframework.messaging.responsetypes.ResponseTypes;
+import org.axonframework.queryhandling.QueryGateway;
 import org.mkralik.learning.axon.microservices.api.Booking;
+import org.mkralik.learning.axon.microservices.api.car.query.CarBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.event.ChangedHotelStateEvent;
 import org.mkralik.learning.axon.microservices.api.hotel.event.CreatedHotelEvent;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +14,7 @@ import org.mkralik.learning.axon.microservices.api.hotel.query.AllHotelBookingSu
 import org.mkralik.learning.axon.microservices.api.hotel.query.HotelBookingSummaryQuery;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.util.*;
 
 @Component
@@ -20,10 +24,21 @@ public class HotelProjection {
 
     private Map<String, Booking> bookings = new HashMap<>();
 
+    @Inject
+    private QueryGateway queryGateway;
+
     @EventHandler
     public void on(CreatedHotelEvent evt){
         log.debug("projecting CreatedHotelEvent {}", evt);
-        bookings.put(evt.getId(), new Booking(evt.getId().toString(), evt.getName(), evt.getType(), evt.getStatus(), evt.getDetails()));
+        //get cars from car service
+        List<Booking> cars = new ArrayList<>();
+        for (String carId : evt.getCarsId()) {
+            Booking car = queryGateway.query(new CarBookingSummaryQuery(carId),
+                    ResponseTypes.instanceOf(Booking.class))
+                    .join();
+            cars.add(car);
+        }
+        bookings.put(evt.getId(), new Booking(evt.getId(), evt.getName(), evt.getStatus(), evt.getType(), cars));
     }
 
     @EventHandler

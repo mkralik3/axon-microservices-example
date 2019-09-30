@@ -11,6 +11,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
+import java.util.List;
+
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate
@@ -23,29 +25,12 @@ public class Car {
     private String name;
     private Booking.BookingStatus status;
     private String type;
-    private Booking[] details;
 
     @CommandHandler
     public Car(CreateCarCmd cmd){
         log.debug("handling {}", cmd);
-        apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getType(), cmd.getDetails()));
+        apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getType()));
     }
-
-//    @CommandHandler
-//    public boolean handle(AxonLraCompensateCommand cmd){
-//        log.debug("Someone wants to compensate {}", cmd);
-//        //do some validation
-//        apply(new ChangedCarStateEvent(cmd.getId(), BookingStatus.CANCELLED));
-//        return true;
-//    }
-//
-//    @CommandHandler
-//    public boolean handle(AxonLraCompleteCommand cmd){
-//        log.debug("Someone wants to complete {}", cmd);
-//        //do some validation
-//        apply(new ChangedCarStateEvent(cmd.getId(), BookingStatus.CONFIRMED));
-//        return true;
-//    }
 
     @EventSourcingHandler
     public void on(CreatedCarEvent evt){
@@ -54,7 +39,6 @@ public class Car {
         name = evt.getName();
         status = evt.getStatus();
         type = evt.getType();
-        details = evt.getDetails();
     }
 
     @EventSourcingHandler

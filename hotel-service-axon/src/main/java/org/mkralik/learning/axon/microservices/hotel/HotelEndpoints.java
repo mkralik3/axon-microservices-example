@@ -2,6 +2,10 @@ package org.mkralik.learning.axon.microservices.hotel;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.mkralik.learning.axon.microservices.api.Booking;
+import org.mkralik.learning.axon.microservices.api.car.command.CompensateCarCmd;
+import org.mkralik.learning.axon.microservices.api.car.command.CompleteCarCmd;
+import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
+import org.mkralik.learning.axon.microservices.api.car.query.CarBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompleteHotelCmd;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +25,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
+import java.util.Collections;
 
 import static org.eclipse.microprofile.lra.annotation.ws.rs.LRA.LRA_HTTP_CONTEXT_HEADER;
 
@@ -40,8 +45,15 @@ public class HotelEndpoints {
     @LRA(value = LRA.Type.REQUIRED, end = false)
     public Booking bookRoom(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId,
                             @QueryParam("hotelName") @DefaultValue("Default") String hotelName) throws InterruptedException {
-        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", null));
-//        cmdGateway.sendAndWait(new CreateCarCmd(lraId, hotelName, "Car", null));
+        //two aggregates cannot the same ID even though they are a different type
+        String carId = lraId+"CAR";
+        cmdGateway.sendAndWait(new CreateCarCmd(carId, hotelName, "Car"));
+        Thread.sleep(500);
+        Booking car = queryGateway.query(new CarBookingSummaryQuery(carId),
+                ResponseTypes.instanceOf(Booking.class))
+                .join();
+
+        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", Collections.singletonList(car.getId())));
         Thread.sleep(500);
         return getBookingFromQueryBus(lraId);
     }

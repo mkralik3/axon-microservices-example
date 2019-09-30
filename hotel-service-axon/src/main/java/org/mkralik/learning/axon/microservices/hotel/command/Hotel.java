@@ -13,6 +13,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
+import java.util.List;
+
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate
@@ -25,12 +27,12 @@ public class Hotel {
     private String name;
     private Booking.BookingStatus status;
     private String type;
-    private Booking[] details;
+    private List<String> carsId;
 
     @CommandHandler
     public Hotel(CreateHotelCmd cmd){
         log.debug("handling {}", cmd);
-        apply(new CreatedHotelEvent(cmd.getId(), cmd.getName(), cmd.getType(), cmd.getDetails()));
+        apply(new CreatedHotelEvent(cmd.getId(), cmd.getName(), cmd.getType(), cmd.getCarsId()));
     }
 
     @CommandHandler
@@ -54,6 +56,7 @@ public class Hotel {
         name = evt.getName();
         status = evt.getStatus();
         type = evt.getType();
+        carsId = evt.getCarsId();
     }
 
     @EventSourcingHandler
