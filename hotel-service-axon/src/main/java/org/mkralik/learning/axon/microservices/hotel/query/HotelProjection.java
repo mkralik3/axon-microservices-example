@@ -3,6 +3,7 @@ package org.mkralik.learning.axon.microservices.hotel.query;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.mkralik.learning.axon.microservices.api.Booking;
+import org.mkralik.learning.axon.microservices.api.car.event.ChangedCarStateEvent;
 import org.mkralik.learning.axon.microservices.api.car.query.CarBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.event.ChangedHotelStateEvent;
 import org.mkralik.learning.axon.microservices.api.hotel.event.CreatedHotelEvent;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -39,6 +41,24 @@ public class HotelProjection {
             cars.add(car);
         }
         bookings.put(evt.getId(), new Booking(evt.getId(), evt.getName(), evt.getStatus(), evt.getType(), cars));
+    }
+
+    @EventHandler
+    public void on(ChangedCarStateEvent evt){
+        log.debug("projecting change state in the Hotel service {}", evt);
+        //find all hotel where is the particular car
+        String searchingCarId = evt.getId();
+
+        List<Booking> hotelsForUpdate = bookings.values().stream().filter(hotel -> hotel.getDetails().stream()
+                .anyMatch(car -> car.getId().equals(searchingCarId)))
+                .collect(Collectors.toList());
+
+        for (Booking hotel : hotelsForUpdate) {
+            hotel.getDetails().stream()
+                    .filter(car -> car.getId().equals(searchingCarId))
+                    .findAny()
+                    .ifPresent(car -> car.setStatus(evt.getStatus()));
+            }
     }
 
     @EventHandler

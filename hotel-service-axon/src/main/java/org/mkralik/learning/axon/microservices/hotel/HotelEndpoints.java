@@ -53,7 +53,7 @@ public class HotelEndpoints {
                 ResponseTypes.instanceOf(Booking.class))
                 .join();
 
-        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", Collections.singletonList(car.getId())));
+        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName + "Car", "Hotel", Collections.singletonList(car.getId())));
         Thread.sleep(500);
         return getBookingFromQueryBus(lraId);
     }
@@ -65,6 +65,7 @@ public class HotelEndpoints {
     public Response completeWork(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId) throws NotFoundException, InterruptedException, JsonProcessingException {
         log.info("Complete work in Axon hotel service");
         cmdGateway.sendAndWait(new CompleteHotelCmd(lraId));
+        cmdGateway.sendAndWait(new CompleteCarCmd(lraId+"CAR"));
         Thread.sleep(500);
         return Response.ok(getBookingFromQueryBus(lraId).toJson()).build();
     }
@@ -76,6 +77,7 @@ public class HotelEndpoints {
     public Response compensateWork(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId) throws NotFoundException, InterruptedException, JsonProcessingException {
         log.info("Compensate work in Axon hotel service");
         cmdGateway.sendAndWait(new CompensateHotelCmd(lraId));
+        cmdGateway.sendAndWait(new CompensateCarCmd(lraId+"CAR"));
         Thread.sleep(500);
         return Response.ok(getBookingFromQueryBus(lraId).toJson()).build();
     }

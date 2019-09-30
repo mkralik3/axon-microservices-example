@@ -1,6 +1,8 @@
 package org.mkralik.learning.axon.microservices.car.command;
 
 import org.mkralik.learning.axon.microservices.api.Booking;
+import org.mkralik.learning.axon.microservices.api.car.command.CompensateCarCmd;
+import org.mkralik.learning.axon.microservices.api.car.command.CompleteCarCmd;
 import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
 import org.mkralik.learning.axon.microservices.api.car.event.ChangedCarStateEvent;
 import org.mkralik.learning.axon.microservices.api.car.event.CreatedCarEvent;
@@ -30,6 +32,20 @@ public class Car {
     public Car(CreateCarCmd cmd){
         log.debug("handling {}", cmd);
         apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getType()));
+    }
+
+    @CommandHandler
+    public void handle(CompleteCarCmd cmd){
+        log.debug("handling {}", cmd);
+        //do some validation
+        apply(new ChangedCarStateEvent(cmd.getId(), cmd.getStatus()));
+    }
+
+    @CommandHandler
+    public void handle(CompensateCarCmd cmd){
+        log.debug("handling {}", cmd);
+        //do some validation
+        apply(new ChangedCarStateEvent(cmd.getId(), cmd.getStatus()));
     }
 
     @EventSourcingHandler
