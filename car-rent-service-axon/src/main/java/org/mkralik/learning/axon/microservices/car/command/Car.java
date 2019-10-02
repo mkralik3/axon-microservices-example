@@ -1,8 +1,8 @@
 package org.mkralik.learning.axon.microservices.car.command;
 
+import org.axonframework.messaging.annotation.MetaDataValue;
+import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.car.command.CompensateCarCmd;
-import org.mkralik.learning.axon.microservices.api.car.command.CompleteCarCmd;
 import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
 import org.mkralik.learning.axon.microservices.api.car.event.ChangedCarStateEvent;
 import org.mkralik.learning.axon.microservices.api.car.event.CreatedCarEvent;
@@ -15,7 +15,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.mkralik.learning.lra.axon.api.AxonLraCompensateCommand;
 import org.mkralik.learning.lra.axon.api.AxonLraCompleteCommand;
 
-import java.util.List;
+import java.net.URI;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
@@ -31,25 +31,23 @@ public class Car {
     private String type;
 
     @CommandHandler
-    public Car(CreateCarCmd cmd){
-        log.debug("handling {}", cmd);
+    public Car(CreateCarCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context){
+        log.info("handling {}", cmd);
         apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getType()));
     }
 
     @CommandHandler
-    public boolean handle(AxonLraCompensateCommand cmd){
+    public void handle(AxonLraCompensateCommand cmd){
         log.debug("Someone wants to compensate {}", cmd);
         //do some validation
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CANCELLED));
-        return true;
     }
 
     @CommandHandler
-    public boolean handle(AxonLraCompleteCommand cmd){
+    public void handle(AxonLraCompleteCommand cmd){
         log.debug("Someone wants to complete {}", cmd);
         //do some validation
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMED));
-        return true;
     }
 
     @EventSourcingHandler

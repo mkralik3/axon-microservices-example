@@ -2,8 +2,6 @@ package org.mkralik.learning.axon.microservices.hotel;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.car.command.CompensateCarCmd;
-import org.mkralik.learning.axon.microservices.api.car.command.CompleteCarCmd;
 import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
 import org.mkralik.learning.axon.microservices.api.car.query.CarBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;
@@ -24,7 +22,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -48,8 +45,8 @@ public class HotelEndpoints {
                             @QueryParam("hotelName") @DefaultValue("Default") String hotelName) throws InterruptedException {
         //two aggregates cannot the same ID even though they are a different type
 //        String carId = lraId + "CAR";
-        String carId = "testCar";
-        cmdGateway.sendAndWait(new CreateCarCmd(carId, URI.create(lraId), hotelName, "Car"));
+        String carId = lraId.split("/")[4]; // use lra ID as an car ID
+        cmdGateway.sendAndWait(new CreateCarCmd(carId, hotelName, "Car"));
         Thread.sleep(500);
         Booking car = queryGateway.query(new CarBookingSummaryQuery(carId),
                 ResponseTypes.instanceOf(Booking.class))
