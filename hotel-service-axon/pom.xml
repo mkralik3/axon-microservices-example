@@ -43,8 +43,8 @@
         </dependency>
         <dependency>
             <groupId>org.jboss.narayana.rts</groupId>
-            <artifactId>lra-filters</artifactId>
-            <version>5.9.6.Final</version>
+            <artifactId>narayana-lra</artifactId>
+            <version>5.9.8.Final</version>
         </dependency>
         <dependency>
             <groupId>org.mkralik.learning.axon.microservices</groupId>
