@@ -1,6 +1,7 @@
 package org.mkralik.learning.axon.microservices.car.command;
 
 import org.axonframework.messaging.annotation.MetaDataValue;
+import org.eclipse.microprofile.lra.annotation.ParticipantStatus;
 import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.Booking;
 import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
@@ -12,8 +13,9 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
-import org.mkralik.learning.lra.axon.api.AxonLraCompensateCommand;
-import org.mkralik.learning.lra.axon.api.AxonLraCompleteCommand;
+import org.mkralik.learning.lra.axon.api.command.LRACompensateCommand;
+import org.mkralik.learning.lra.axon.api.command.LRACompleteCommand;
+import org.mkralik.learning.lra.axon.api.command.LRAStatusCommand;
 
 import java.net.URI;
 
@@ -37,17 +39,27 @@ public class Car {
     }
 
     @CommandHandler
-    public void handle(AxonLraCompensateCommand cmd){
+    public ParticipantStatus handle(LRACompensateCommand cmd){
         log.debug("Someone wants to compensate {}", cmd);
         //do some validation
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CANCELLED));
+        //for demonstrating status
+        return ParticipantStatus.Compensating;
     }
 
     @CommandHandler
-    public void handle(AxonLraCompleteCommand cmd){
+    public ParticipantStatus handle(LRACompleteCommand cmd){
         log.debug("Someone wants to complete {}", cmd);
         //do some validation
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMED));
+        //for demonstrating status
+        return ParticipantStatus.Completing;
+    }
+
+    @CommandHandler
+    public ParticipantStatus handle(LRAStatusCommand cmd){
+        log.debug("++++++++++STATUS HANDLER! STATUS WAS CHANGED TO COMPLETE+++++");
+        return ParticipantStatus.Completed;
     }
 
     @EventSourcingHandler

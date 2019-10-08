@@ -4,8 +4,10 @@ import io.narayana.lra.client.internal.proxy.nonjaxrs.LRAParticipantRegistry;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.wadl.internal.WadlResource;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+//@Primary
 @Component
 public class JerseyConfig extends ResourceConfig {
 
