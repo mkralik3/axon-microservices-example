@@ -13,6 +13,7 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.mkralik.learning.lra.axon.api.command.LRAAfterCommand;
 import org.mkralik.learning.lra.axon.api.command.LRACompensateCommand;
 import org.mkralik.learning.lra.axon.api.command.LRACompleteCommand;
 import org.mkralik.learning.lra.axon.api.command.LRAStatusCommand;
@@ -43,15 +44,14 @@ public class Car {
         log.debug("Someone wants to compensate {}", cmd);
         //do some validation
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CANCELLED));
-        //for demonstrating status
-        return ParticipantStatus.Compensating;
+        return ParticipantStatus.Compensated;
     }
 
     @CommandHandler
     public ParticipantStatus handle(LRACompleteCommand cmd){
         log.debug("Someone wants to complete {}", cmd);
         //do some validation
-        apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMED));
+        apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMING));
         //for demonstrating status
         return ParticipantStatus.Completing;
     }
@@ -59,7 +59,13 @@ public class Car {
     @CommandHandler
     public ParticipantStatus handle(LRAStatusCommand cmd){
         log.debug("++++++++++STATUS HANDLER! STATUS WAS CHANGED TO COMPLETE+++++");
+        apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMED));
         return ParticipantStatus.Completed;
+    }
+
+    @CommandHandler
+    public void handle(LRAAfterCommand cmd){
+        log.debug("++++++++++ The LRA is done. After method was invoked with cmd {}", cmd);
     }
 
     @EventSourcingHandler
