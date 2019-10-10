@@ -12,8 +12,8 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
-import org.mkralik.learning.lra.axon.api.AxonLraCompensateCommand;
-import org.mkralik.learning.lra.axon.api.AxonLraCompleteCommand;
+import org.mkralik.learning.lra.axon.api.command.AxonLraCompensateCommand;
+import org.mkralik.learning.lra.axon.api.command.AxonLraCompleteCommand;
 
 import java.net.URI;
 
