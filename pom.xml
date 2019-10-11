@@ -9,21 +9,38 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   
-<name>microservices-parent</name>
+  <name>microservices-parent</name>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>
+      <spring.boot.version>2.1.8.RELEASE</spring.boot.version>
+      <axon.version>4.2</axon.version>
+
+      <narayana.version>5.9.8.Final</narayana.version>
+      <axon.lra.version>1.0-SNAPSHOT</axon.lra.version>
+
+      <lombok.version>1.18.8</lombok.version>
+      <fasterxml.jackson.version>2.10.0.pr3</fasterxml.jackson.version>
   </properties>
 
   <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
+            <version>${lombok.version}</version>
         </dependency>
+      <dependency>
+          <groupId>org.axonframework</groupId>
+          <artifactId>axon-spring-boot-starter</artifactId>
+          <version>${axon.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.mkralik.learning.lra.axon</groupId>
+          <artifactId>lra-axon-connector</artifactId>
+          <version>${axon.lra.version}</version>
+      </dependency>
     </dependencies>
   <modules>
     <module>api</module>
