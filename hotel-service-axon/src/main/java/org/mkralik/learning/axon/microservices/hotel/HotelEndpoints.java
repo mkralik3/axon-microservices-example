@@ -46,13 +46,13 @@ public class HotelEndpoints {
         //two aggregates cannot the same ID even though they are a different type
 //        String carId = lraId + "CAR";
         String carId = lraId.split("/")[4]; // use lra ID as an car ID
-        cmdGateway.sendAndWait(new CreateCarCmd(carId, hotelName, "Car"));
+        cmdGateway.sendAndWait(new CreateCarCmd(carId, hotelName + "Car", "Car"));
         Thread.sleep(500);
         Booking car = queryGateway.query(new CarBookingSummaryQuery(carId),
                 ResponseTypes.instanceOf(Booking.class))
                 .join();
 
-        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName + "Car", "Hotel", Collections.singletonList(car.getId())));
+        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName + "Hotel", "Hotel", Collections.singletonList(car.getId())));
         Thread.sleep(500);
         return getBookingFromQueryBus(lraId);
     }
