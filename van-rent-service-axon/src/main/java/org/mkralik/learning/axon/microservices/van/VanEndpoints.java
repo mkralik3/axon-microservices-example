@@ -7,22 +7,23 @@ import org.mkralik.learning.axon.microservices.api.Booking;
 import org.mkralik.learning.axon.microservices.api.van.query.AllVanBookingSummaryQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 
-@Service
-@RequestMapping("/van")
 @Slf4j
-@RestController
+@Service
+@Path("/van")
 public class VanEndpoints {
 
     @Autowired
     private QueryGateway queryGateway;
 
-    @GetMapping
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Collection<Booking> getAllVan() {
         return queryGateway.query(new AllVanBookingSummaryQuery(), ResponseTypes.multipleInstancesOf(Booking.class)).join();
     }
