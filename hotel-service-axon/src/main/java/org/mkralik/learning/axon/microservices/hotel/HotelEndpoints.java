@@ -16,12 +16,15 @@ import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.query.AllHotelBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.query.HotelBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.van.command.CreateVanCmd;
+import org.mkralik.learning.axon.microservices.api.van.query.VanBookingSummaryQuery;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -44,15 +47,22 @@ public class HotelEndpoints {
     public Booking bookRoom(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId,
                             @QueryParam("hotelName") @DefaultValue("Default") String hotelName) throws InterruptedException {
         //two aggregates cannot the same ID even though they are a different type
-//        String carId = lraId + "CAR";
-        String carId = lraId.split("/")[4]; // use lra ID as an car ID
-        cmdGateway.sendAndWait(new CreateCarCmd(carId, hotelName + "Car", "Car"));
+        String carID = lraId.split("/")[4] + "CAR"; // use lra ID as an car ID
+        String vanID = lraId.split("/")[4] + "VAR"; // use lra ID as an car ID
+
+        cmdGateway.sendAndWait(new CreateCarCmd(carID, hotelName + "Car", "Car"));
+        cmdGateway.sendAndWait(new CreateVanCmd(vanID , hotelName + "Van", "Van"));
         Thread.sleep(500);
-        Booking car = queryGateway.query(new CarBookingSummaryQuery(carId),
+
+        Booking car = queryGateway.query(new CarBookingSummaryQuery(carID),
                 ResponseTypes.instanceOf(Booking.class))
                 .join();
 
-        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName + "Hotel", "Hotel", Collections.singletonList(car.getId())));
+        Booking van = queryGateway.query(new VanBookingSummaryQuery(vanID),
+                ResponseTypes.instanceOf(Booking.class))
+                .join();
+
+        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", Arrays.asList(car.getId(), van.getId())));
         Thread.sleep(500);
         return getBookingFromQueryBus(lraId);
     }

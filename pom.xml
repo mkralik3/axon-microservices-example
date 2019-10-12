@@ -44,7 +44,8 @@
     </dependencies>
   <modules>
     <module>api</module>
-    <module>car-rent-service-axon</module>
     <module>hotel-service-axon</module>
+    <module>car-rent-service-axon</module>
+    <module>van-rent-service-axon</module>
   </modules>
 </project>
