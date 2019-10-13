@@ -18,7 +18,7 @@ public class JerseyConfig extends ResourceConfig {
         register(io.narayana.lra.filter.ServerLRAFilter.class);
         //In case you want to use full AxonLra extension with JAX RS service. When you want only propagate the context, you don't need this endpoint which is used for communication with LRA coordinator.
         register(org.mkralik.learning.lra.axon.rest.AxonLraEndpointsJaxRS.class);
-        register(new AbstractBinder(){
+        register(new AbstractBinder() {
             @Override
             protected void configure() {
                 bind(LRAParticipantRegistry.class)

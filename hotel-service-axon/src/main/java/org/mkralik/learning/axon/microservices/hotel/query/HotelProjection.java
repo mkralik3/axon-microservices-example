@@ -44,7 +44,7 @@ public class HotelProjection {
     @QueryHandler
     public Booking handle(HotelBookingSummaryQuery qry) {
         HotelBookingEntity hotelBookingEntity = bookings.get(qry.getId());
-        if(hotelBookingEntity==null){
+        if (hotelBookingEntity == null) {
             return null;
         }
         return transformToGeneralBooking(hotelBookingEntity);
@@ -60,10 +60,10 @@ public class HotelProjection {
     }
 
 
-    private Booking transformToGeneralBooking(HotelBookingEntity hotelBookingEntity){
+    private Booking transformToGeneralBooking(HotelBookingEntity hotelBookingEntity) {
         List<Booking> subBookings = new ArrayList<>();
         for (String subBookingId : hotelBookingEntity.getSubBookingId()) {
-            Booking subBooking = null;
+            Booking subBooking;
             subBooking = queryGateway.query(new CarBookingSummaryQuery(subBookingId),
                     ResponseTypes.instanceOf(Booking.class))
                     .join();

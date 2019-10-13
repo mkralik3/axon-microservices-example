@@ -29,25 +29,25 @@ public class TicketProjection {
     private Map<String, Booking> bookings = new HashMap<>();
 
     @EventHandler
-    public void on(CreatedTicketEvent evt){
+    public void on(CreatedTicketEvent evt) {
         log.debug("projecting CreatedCinemaEvent {}", evt);
         bookings.put(evt.getId(), new Booking(evt.getId(), evt.getName(), evt.getStatus(), evt.getType(), null));
     }
 
     @EventHandler
-    public void on(ChangedTicketStateEvent evt){
+    public void on(ChangedTicketStateEvent evt) {
         log.debug("projecting ChangedCinemaStateEvent {}", evt);
         bookings.get(evt.getId()).setStatus(evt.getStatus());
     }
 
     @QueryHandler
-    public Booking handle(TicketBookingSummaryQuery qry){
+    public Booking handle(TicketBookingSummaryQuery qry) {
         return bookings.get(qry.getId());
     }
 
     @QueryHandler
-    public List<Booking> handle(AllTicketBookingSummaryQuery qry){
+    public List<Booking> handle(AllTicketBookingSummaryQuery qry) {
 
-        return new ArrayList<Booking>(bookings.values());
+        return new ArrayList<>(bookings.values());
     }
 }

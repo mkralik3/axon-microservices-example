@@ -29,25 +29,25 @@ public class VanProjection {
     private Map<String, Booking> bookings = new HashMap<>();
 
     @EventHandler
-    public void on(CreatedVanEvent evt){
+    public void on(CreatedVanEvent evt) {
         log.debug("projecting CreatedVanEvent {}", evt);
         bookings.put(evt.getId(), new Booking(evt.getId(), evt.getName(), evt.getStatus(), evt.getType(), null));
     }
 
     @EventHandler
-    public void on(ChangedVanStateEvent evt){
+    public void on(ChangedVanStateEvent evt) {
         log.debug("projecting ChangedVanStateEvent {}", evt);
         bookings.get(evt.getId()).setStatus(evt.getStatus());
     }
 
     @QueryHandler
-    public Booking handle(VanBookingSummaryQuery qry){
+    public Booking handle(VanBookingSummaryQuery qry) {
         return bookings.get(qry.getId());
     }
 
     @QueryHandler
-    public List<Booking> handle(AllVanBookingSummaryQuery qry){
+    public List<Booking> handle(AllVanBookingSummaryQuery qry) {
 
-        return new ArrayList<Booking>(bookings.values());
+        return new ArrayList<>(bookings.values());
     }
 }

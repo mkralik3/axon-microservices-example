@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class HotelBookingEntity {
+class HotelBookingEntity {
     private String id;
     private String name;
     private Booking.BookingStatus status;

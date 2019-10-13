@@ -32,26 +32,26 @@ public class Ticket {
     private String type;
 
     @CommandHandler
-    public Ticket(CreateTicketCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context){
+    public Ticket(CreateTicketCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context) {
         apply(new CreatedTicketEvent(cmd.getId(), cmd.getName(), cmd.getType()));
     }
 
     @CommandHandler
-    public ParticipantStatus handle(LRACompensateCommand cmd){
+    public ParticipantStatus handle(LRACompensateCommand cmd) {
         log.debug("Someone wants to compensate ticket {}", cmd);
         apply(new ChangedTicketStateEvent(cmd.getId(), Booking.BookingStatus.CANCELLED));
         return ParticipantStatus.Compensated;
     }
 
     @CommandHandler
-    public ParticipantStatus handle(LRACompleteCommand cmd){
+    public ParticipantStatus handle(LRACompleteCommand cmd) {
         log.debug("Someone wants to complete ticket {}", cmd);
         apply(new ChangedTicketStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMED));
         return ParticipantStatus.Completed;
     }
 
     @EventSourcingHandler
-    public void on(CreatedTicketEvent evt){
+    public void on(CreatedTicketEvent evt) {
         log.debug("applying {}", evt);
         id = evt.getId();
         name = evt.getName();
@@ -60,7 +60,7 @@ public class Ticket {
     }
 
     @EventSourcingHandler
-    public void on(ChangedTicketStateEvent evt){
+    public void on(ChangedTicketStateEvent evt) {
         log.debug("applying {}", evt);
         status = evt.getStatus();
     }

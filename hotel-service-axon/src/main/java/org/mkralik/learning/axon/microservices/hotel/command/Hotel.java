@@ -30,27 +30,27 @@ public class Hotel {
     private List<String> carsId;
 
     @CommandHandler
-    public Hotel(CreateHotelCmd cmd){
+    public Hotel(CreateHotelCmd cmd) {
         log.debug("handling {}", cmd);
         apply(new CreatedHotelEvent(cmd.getId(), cmd.getName(), cmd.getType(), cmd.getCarsId()));
     }
 
     @CommandHandler
-    public void handle(CompleteHotelCmd cmd){
+    public void handle(CompleteHotelCmd cmd) {
         log.debug("handling {}", cmd);
         //do some validation
         apply(new ChangedHotelStateEvent(cmd.getId(), cmd.getStatus()));
     }
 
     @CommandHandler
-    public void handle(CompensateHotelCmd cmd){
+    public void handle(CompensateHotelCmd cmd) {
         log.debug("handling {}", cmd);
         //do some validation
         apply(new ChangedHotelStateEvent(cmd.getId(), cmd.getStatus()));
     }
 
     @EventSourcingHandler
-    public void on(CreatedHotelEvent evt){
+    public void on(CreatedHotelEvent evt) {
         log.debug("applying {}", evt);
         id = evt.getId();
         name = evt.getName();
@@ -60,7 +60,7 @@ public class Hotel {
     }
 
     @EventSourcingHandler
-    public void on(ChangedHotelStateEvent evt){
+    public void on(ChangedHotelStateEvent evt) {
         log.debug("applying {}", evt);
         status = evt.getStatus();
     }

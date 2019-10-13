@@ -36,13 +36,13 @@ public class Car {
     private String type;
 
     @CommandHandler
-    public Car(CreateCarCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context){
+    public Car(CreateCarCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context) {
         log.info("handling {}", cmd);
         apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getType()));
     }
 
     @CommandHandler
-    public ParticipantStatus handle(LRACompensateCommand cmd){
+    public ParticipantStatus handle(LRACompensateCommand cmd) {
         log.debug("Someone wants to compensate {}", cmd);
         //do some validation
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CANCELLED));
@@ -50,7 +50,7 @@ public class Car {
     }
 
     @CommandHandler
-    public ParticipantStatus handle(LRACompleteCommand cmd){
+    public ParticipantStatus handle(LRACompleteCommand cmd) {
         log.debug("Someone wants to complete {}", cmd);
         //do some validation
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMING));
@@ -59,19 +59,19 @@ public class Car {
     }
 
     @CommandHandler
-    public ParticipantStatus handle(LRAStatusCommand cmd){
+    public ParticipantStatus handle(LRAStatusCommand cmd) {
         log.debug("++++++++++STATUS HANDLER! STATUS WAS CHANGED TO COMPLETE+++++");
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMED));
         return ParticipantStatus.Completed;
     }
 
     @CommandHandler
-    public void handle(LRAAfterCommand cmd){
+    public void handle(LRAAfterCommand cmd) {
         log.debug("++++++++++ The LRA is done. After method was invoked with cmd {}", cmd);
     }
 
     @EventSourcingHandler
-    public void on(CreatedCarEvent evt){
+    public void on(CreatedCarEvent evt) {
         log.debug("applying {}", evt);
         id = evt.getId();
         name = evt.getName();
@@ -80,7 +80,7 @@ public class Car {
     }
 
     @EventSourcingHandler
-    public void on(ChangedCarStateEvent evt){
+    public void on(ChangedCarStateEvent evt) {
         log.debug("applying {}", evt);
         status = evt.getStatus();
     }

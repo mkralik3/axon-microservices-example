@@ -55,8 +55,8 @@ public class HotelEndpoints {
         String ticketID = lraId.split("/")[4] + "TICKET";
 
         cmdGateway.sendAndWait(new CreateCarCmd(carID, hotelName + "Car", "Car"));
-        cmdGateway.sendAndWait(new CreateVanCmd(vanID , hotelName + "Van", "Van"));
-        cmdGateway.sendAndWait(new CreateTicketCmd(ticketID , new URI(lraId),hotelName + "Ticket", "CinemaTicket"));
+        cmdGateway.sendAndWait(new CreateVanCmd(vanID, hotelName + "Van", "Van"));
+        cmdGateway.sendAndWait(new CreateTicketCmd(ticketID, new URI(lraId), hotelName + "Ticket", "CinemaTicket"));
         cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", Arrays.asList(carID, vanID, ticketID)));
         Thread.sleep(500); //eventual consistency
         return getBookingFromQueryBus(lraId);

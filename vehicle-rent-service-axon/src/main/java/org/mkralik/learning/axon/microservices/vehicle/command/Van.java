@@ -33,20 +33,20 @@ public class Van {
     private String type;
 
     @CommandHandler
-    public Van(CreateVanCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context){
+    public Van(CreateVanCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context) {
         log.info("handling  Van {}", cmd);
         apply(new CreatedVanEvent(cmd.getId(), cmd.getName(), cmd.getType()));
     }
 
     @CommandHandler
-    public void handle(LRACompensateCommand cmd){
+    public void handle(LRACompensateCommand cmd) {
         log.debug("Someone wants to compensate Van {}", cmd);
         //do some validation
         apply(new ChangedVanStateEvent(cmd.getId(), Booking.BookingStatus.CANCELLED));
     }
 
     @CommandHandler
-    public ParticipantStatus handle(LRACompleteCommand cmd){
+    public ParticipantStatus handle(LRACompleteCommand cmd) {
         log.debug("Someone wants to complete  Van{}", cmd);
         //do some validation
         apply(new ChangedVanStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMING));
@@ -55,7 +55,7 @@ public class Van {
     }
 
     @CommandHandler
-    public ParticipantStatus handle(LRAStatusCommand cmd){
+    public ParticipantStatus handle(LRAStatusCommand cmd) {
         log.debug("++++++++++Van STATUS HANDLER! STATUS WAS CHANGED TO COMPLETE+++++");
         apply(new ChangedVanStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMED));
         return ParticipantStatus.Completed;
@@ -63,7 +63,7 @@ public class Van {
 
 
     @EventSourcingHandler
-    public void on(CreatedVanEvent evt){
+    public void on(CreatedVanEvent evt) {
         log.debug("applying {}", evt);
         id = evt.getId();
         name = evt.getName();
@@ -72,7 +72,7 @@ public class Van {
     }
 
     @EventSourcingHandler
-    public void on(ChangedVanStateEvent evt){
+    public void on(ChangedVanStateEvent evt) {
         log.debug("applying {}", evt);
         status = evt.getStatus();
     }

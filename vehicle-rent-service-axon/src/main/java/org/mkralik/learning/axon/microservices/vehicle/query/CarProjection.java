@@ -29,25 +29,25 @@ public class CarProjection {
     private Map<String, Booking> bookings = new HashMap<>();
 
     @EventHandler
-    public void on(CreatedCarEvent evt){
+    public void on(CreatedCarEvent evt) {
         log.debug("projecting CreatedCarEvent {}", evt);
         bookings.put(evt.getId(), new Booking(evt.getId(), evt.getName(), evt.getStatus(), evt.getType(), null));
     }
 
     @EventHandler
-    public void on(ChangedCarStateEvent evt){
+    public void on(ChangedCarStateEvent evt) {
         log.debug("projecting ChangedCarStateEvent {}", evt);
         bookings.get(evt.getId()).setStatus(evt.getStatus());
     }
 
     @QueryHandler
-    public Booking handle(CarBookingSummaryQuery qry){
+    public Booking handle(CarBookingSummaryQuery qry) {
         return bookings.get(qry.getId());
     }
 
     @QueryHandler
-    public List<Booking> handle(AllCarBookingSummaryQuery qry){
+    public List<Booking> handle(AllCarBookingSummaryQuery qry) {
 
-        return new ArrayList<Booking>(bookings.values());
+        return new ArrayList<>(bookings.values());
     }
 }
