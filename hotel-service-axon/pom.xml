@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.mkralik.learning.axon.microservices</groupId>
         <artifactId>microservices-parent</artifactId>
@@ -12,11 +12,6 @@
     <artifactId>hotel-service</artifactId>
     <packaging>jar</packaging>
     <name>hotel-service</name>
-
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -33,18 +28,28 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-spring-boot-starter</artifactId>
+            <version>${axon.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mkralik.learning.lra.axon</groupId>
+            <artifactId>interceptor</artifactId>
+            <version>${axon.lra.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mkralik.learning.axon.microservices</groupId>
+            <artifactId>api</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.narayana.rts</groupId>
             <artifactId>narayana-lra</artifactId>
             <version>${narayana.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mkralik.learning.axon.microservices</groupId>
-            <artifactId>api</artifactId>
-            <version>${parent.version}</version>
         </dependency>
     </dependencies>
 
@@ -64,5 +69,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

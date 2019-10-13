@@ -1,6 +1,6 @@
 package org.mkralik.learning.axon.microservices.hotel;
 
-import org.mkralik.learning.lra.axon.api.EnableLraAxonConnectorModule;
+import org.mkralik.learning.lra.axon.interceptor.EnableLraAxonConnectorModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

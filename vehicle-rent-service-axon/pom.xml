@@ -3,14 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.mkralik.learning.axon.microservices</groupId>
         <artifactId>microservices-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>car-rent-service</artifactId>
+    <artifactId>vehicle-rent-service</artifactId>
     <packaging>jar</packaging>
-    <name>car-rent-service</name>
+    <name>vehicle-rent-service</name>
 
     <dependencyManagement>
         <dependencies>
@@ -27,13 +28,23 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-spring-boot-starter</artifactId>
+            <version>${axon.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.mkralik.learning.lra.axon</groupId>
+            <artifactId>interceptor</artifactId>
+            <version>${axon.lra.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.mkralik.learning.axon.microservices</groupId>
             <artifactId>api</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 
@@ -53,5 +64,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
