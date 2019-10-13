@@ -1,0 +1,59 @@
+
+version: "3.7"
+
+services:
+  axon-server:
+    image: axoniq/axonserver:4.2
+    container_name: axon-server
+    ports:
+      - "8024:8024"
+      - "8124:8124"
+
+  lra-coordinator:
+    image: jbosstm/lra-coordinator:5.9.8.Final
+    container_name: lra-coordinator
+    ports:
+      - "8080:8080"
+
+  flight-service:
+    build: ./lraResources/flight
+    container_name: flight
+    ports:
+      - "8083:8083"
+    environment:
+      - "JAVA_OPTS=-Dlra.http.host=lra-coordinator -Dlra.http.port=8080"
+
+  trip-service:
+    build: ./lraResources/trip
+    container_name: trip
+    ports:
+      - "8084:8084"
+    environment:
+      - "JAVA_OPTS=-Dlra.http.host=lra-coordinator -Dlra.http.port=8080 -Dhotel.service.http.host=hotel-service -Dflight.service.http.host=flight-service"
+
+  cinema-service:
+    build: ./cinema-service-axon
+    container_name: cinema
+    ports:
+      - "8086:8086"
+    environment:
+      - AXON_SERVER=axon-server
+      - "JAVA_OPTS=-Dlra.http.host=lra-coordinator -Dlra.http.port=8080"
+
+  vehicle-service:
+    build: ./vehicle-rent-service-axon
+    container_name: vehlicle
+    ports:
+      - "8085:8085"
+    environment:
+      - AXON_SERVER=axon-server
+      - "JAVA_OPTS=-Dlra.http.host=lra-coordinator -Dlra.http.port=8080"
+
+  hotel-service:
+    build: ./hotel-service-axon
+    container_name: hotel
+    ports:
+      - "8082:8082"
+    environment:
+      - AXON_SERVER=axon-server
+      - "JAVA_OPTS=-Dlra.http.host=lra-coordinator -Dlra.http.port=8080 -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true"

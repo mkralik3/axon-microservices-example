@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: cinema-service-axon
+
+server:
+  port: 8086
+
+axon:
+  axonserver:
+    servers:
+      ${AXON_SERVER:localhost}:8124
+
+logging:
+  level:
+    org:
+      mkralik:
+        learning:
+          axon:
+            microservices:
+              cinema: debug
+          lra:
+            axon: debug

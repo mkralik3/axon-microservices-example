@@ -63,6 +63,16 @@ docker-compose up
 ```
 During starting, the errors can appear in the log. It is due to the fact, that Axon Server is not ready yet but Axon services want to connect to it. When the Axon services are successfully connected to the Axon server, you will see `AxonServerEventStore  : open stream: 0
 ` in the log.
+
+```
+docker logs -f lra-coordinator
+docker logs -f flight
+docker logs -f trip
+docker logs -f axon-server
+docker logs -f hotel
+docker logs -f vehlicle
+docker logs -f cinema
+```
 ####3b. Set up manually
 [TBD]
 ```
