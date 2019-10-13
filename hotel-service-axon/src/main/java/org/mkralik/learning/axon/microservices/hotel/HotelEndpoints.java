@@ -2,8 +2,10 @@ package org.mkralik.learning.axon.microservices.hotel;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.car.command.CreateCarCmd;
-import org.mkralik.learning.axon.microservices.api.car.query.CarBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.cinema.command.CreateTicketCmd;
+import org.mkralik.learning.axon.microservices.api.cinema.query.TicketBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.vehicle.command.CreateCarCmd;
+import org.mkralik.learning.axon.microservices.api.vehicle.query.CarBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompleteHotelCmd;
 import lombok.extern.slf4j.Slf4j;
@@ -16,17 +18,18 @@ import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.query.AllHotelBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.query.HotelBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.api.van.command.CreateVanCmd;
-import org.mkralik.learning.axon.microservices.api.van.query.VanBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.vehicle.command.CreateVanCmd;
+import org.mkralik.learning.axon.microservices.api.vehicle.query.VanBookingSummaryQuery;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 import static org.eclipse.microprofile.lra.annotation.ws.rs.LRA.LRA_HTTP_CONTEXT_HEADER;
 
@@ -45,14 +48,17 @@ public class HotelEndpoints {
     @Produces(MediaType.APPLICATION_JSON)
     @LRA(value = LRA.Type.REQUIRED, end = false)
     public Booking bookRoom(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId,
-                            @QueryParam("hotelName") @DefaultValue("Default") String hotelName) throws InterruptedException {
+                            @QueryParam("hotelName") @DefaultValue("Default") String hotelName) throws InterruptedException, URISyntaxException {
         //two aggregates cannot the same ID even though they are a different type
         String carID = lraId.split("/")[4] + "CAR"; // use lra ID as an car ID
-        String vanID = lraId.split("/")[4] + "VAR"; // use lra ID as an car ID
+        String vanID = lraId.split("/")[4] + "VAR";
+        String ticketID = lraId.split("/")[4] + "TICKET";
 
         cmdGateway.sendAndWait(new CreateCarCmd(carID, hotelName + "Car", "Car"));
         cmdGateway.sendAndWait(new CreateVanCmd(vanID , hotelName + "Van", "Van"));
-        Thread.sleep(500);
+        cmdGateway.sendAndWait(new CreateTicketCmd(ticketID , new URI(lraId),hotelName + "Ticket", "CinemaTicket"));
+
+        Thread.sleep(1000); //eventual consistency
 
         Booking car = queryGateway.query(new CarBookingSummaryQuery(carID),
                 ResponseTypes.instanceOf(Booking.class))
@@ -62,7 +68,12 @@ public class HotelEndpoints {
                 ResponseTypes.instanceOf(Booking.class))
                 .join();
 
-        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", Arrays.asList(car.getId(), van.getId())));
+        Booking ticket = queryGateway.query(new TicketBookingSummaryQuery(ticketID),
+                ResponseTypes.instanceOf(Booking.class))
+                .join();
+
+        log.debug("SubEntities:\nCar {}\nVan {}\nTicket {}", car, van, ticket);
+        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", Arrays.asList(car.getId(), van.getId(), ticket.getId())));
         Thread.sleep(500);
         return getBookingFromQueryBus(lraId);
     }

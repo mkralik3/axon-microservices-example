@@ -56,7 +56,7 @@ public class Hotel {
         name = evt.getName();
         status = evt.getStatus();
         type = evt.getType();
-        carsId = evt.getCarsId();
+        carsId = evt.getSubBookingsId();
     }
 
     @EventSourcingHandler

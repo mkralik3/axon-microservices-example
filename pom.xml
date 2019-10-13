@@ -45,7 +45,7 @@
   <modules>
     <module>api</module>
     <module>hotel-service-axon</module>
-    <module>car-rent-service-axon</module>
-    <module>van-rent-service-axon</module>
+    <module>vehicle-rent-service-axon</module>
+    <module>cinema-service-axon</module>
   </modules>
 </project>
