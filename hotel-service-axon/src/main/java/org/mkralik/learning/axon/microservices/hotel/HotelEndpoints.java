@@ -57,24 +57,8 @@ public class HotelEndpoints {
         cmdGateway.sendAndWait(new CreateCarCmd(carID, hotelName + "Car", "Car"));
         cmdGateway.sendAndWait(new CreateVanCmd(vanID , hotelName + "Van", "Van"));
         cmdGateway.sendAndWait(new CreateTicketCmd(ticketID , new URI(lraId),hotelName + "Ticket", "CinemaTicket"));
-
-        Thread.sleep(1000); //eventual consistency
-
-        Booking car = queryGateway.query(new CarBookingSummaryQuery(carID),
-                ResponseTypes.instanceOf(Booking.class))
-                .join();
-
-        Booking van = queryGateway.query(new VanBookingSummaryQuery(vanID),
-                ResponseTypes.instanceOf(Booking.class))
-                .join();
-
-        Booking ticket = queryGateway.query(new TicketBookingSummaryQuery(ticketID),
-                ResponseTypes.instanceOf(Booking.class))
-                .join();
-
-        log.debug("SubEntities:\nCar {}\nVan {}\nTicket {}", car, van, ticket);
-        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", Arrays.asList(car.getId(), van.getId(), ticket.getId())));
-        Thread.sleep(500);
+        cmdGateway.sendAndWait(new CreateHotelCmd(lraId, hotelName, "Hotel", Arrays.asList(carID, vanID, ticketID)));
+        Thread.sleep(500); //eventual consistency
         return getBookingFromQueryBus(lraId);
     }
 
