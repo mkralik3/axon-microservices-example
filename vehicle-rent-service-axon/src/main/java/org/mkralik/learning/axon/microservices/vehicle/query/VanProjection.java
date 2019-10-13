@@ -6,10 +6,10 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.vehicle.event.ChangedVanStateEvent;
-import org.mkralik.learning.axon.microservices.api.vehicle.event.CreatedVanEvent;
-import org.mkralik.learning.axon.microservices.api.vehicle.query.AllVanBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.api.vehicle.query.VanBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.vehicle.ChangedVanStateEvent;
+import org.mkralik.learning.axon.microservices.api.vehicle.CreatedVanEvent;
+import org.mkralik.learning.axon.microservices.api.vehicle.AllVanBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.vehicle.VanBookingSummaryQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

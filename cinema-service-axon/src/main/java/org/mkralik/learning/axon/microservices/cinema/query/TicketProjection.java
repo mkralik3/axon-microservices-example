@@ -6,10 +6,10 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.cinema.event.ChangedTicketStateEvent;
-import org.mkralik.learning.axon.microservices.api.cinema.event.CreatedTicketEvent;
-import org.mkralik.learning.axon.microservices.api.cinema.query.AllTicketBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.api.cinema.query.TicketBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.cinema.ChangedTicketStateEvent;
+import org.mkralik.learning.axon.microservices.api.cinema.CreatedTicketEvent;
+import org.mkralik.learning.axon.microservices.api.cinema.AllTicketBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.cinema.TicketBookingSummaryQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

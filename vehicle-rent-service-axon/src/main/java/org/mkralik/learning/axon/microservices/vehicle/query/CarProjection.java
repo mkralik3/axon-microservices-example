@@ -2,10 +2,10 @@ package org.mkralik.learning.axon.microservices.vehicle.query;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.vehicle.query.AllCarBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.api.vehicle.query.CarBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.api.vehicle.event.ChangedCarStateEvent;
-import org.mkralik.learning.axon.microservices.api.vehicle.event.CreatedCarEvent;
+import org.mkralik.learning.axon.microservices.api.vehicle.AllCarBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.vehicle.CarBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.vehicle.ChangedCarStateEvent;
+import org.mkralik.learning.axon.microservices.api.vehicle.CreatedCarEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.EventHandler;

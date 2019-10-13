@@ -10,9 +10,9 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.eclipse.microprofile.lra.annotation.ParticipantStatus;
 import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.vehicle.command.CreateVanCmd;
-import org.mkralik.learning.axon.microservices.api.vehicle.event.ChangedVanStateEvent;
-import org.mkralik.learning.axon.microservices.api.vehicle.event.CreatedVanEvent;
+import org.mkralik.learning.axon.microservices.api.vehicle.ChangedVanStateEvent;
+import org.mkralik.learning.axon.microservices.api.vehicle.CreateVanCmd;
+import org.mkralik.learning.axon.microservices.api.vehicle.CreatedVanEvent;
 import org.mkralik.learning.lra.axon.api.command.LRACompensateCommand;
 import org.mkralik.learning.lra.axon.api.command.LRACompleteCommand;
 import org.mkralik.learning.lra.axon.api.command.LRAStatusCommand;
@@ -35,7 +35,7 @@ public class Van {
     @CommandHandler
     public Van(CreateVanCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context) {
         log.info("handling  Van {}", cmd);
-        apply(new CreatedVanEvent(cmd.getId(), cmd.getName(), cmd.getType()));
+        apply(new CreatedVanEvent(cmd.getId(), cmd.getName(), cmd.getStatus(), cmd.getType()));
     }
 
     @CommandHandler

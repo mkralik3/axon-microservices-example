@@ -1,8 +1,8 @@
 package org.mkralik.learning.axon.microservices.vehicle;
 
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.vehicle.query.AllCarBookingSummaryQuery;
-import org.mkralik.learning.axon.microservices.api.vehicle.query.CarBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.vehicle.AllCarBookingSummaryQuery;
+import org.mkralik.learning.axon.microservices.api.vehicle.CarBookingSummaryQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;

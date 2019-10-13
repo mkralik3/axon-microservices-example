@@ -1,14 +1,12 @@
 package org.mkralik.learning.axon.microservices.vehicle.command;
 
-import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.annotation.MetaDataValue;
 import org.eclipse.microprofile.lra.annotation.ParticipantStatus;
 import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.cinema.command.CreateTicketCmd;
-import org.mkralik.learning.axon.microservices.api.vehicle.command.CreateCarCmd;
-import org.mkralik.learning.axon.microservices.api.vehicle.event.ChangedCarStateEvent;
-import org.mkralik.learning.axon.microservices.api.vehicle.event.CreatedCarEvent;
+import org.mkralik.learning.axon.microservices.api.vehicle.CreateCarCmd;
+import org.mkralik.learning.axon.microservices.api.vehicle.ChangedCarStateEvent;
+import org.mkralik.learning.axon.microservices.api.vehicle.CreatedCarEvent;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
@@ -38,7 +36,7 @@ public class Car {
     @CommandHandler
     public Car(CreateCarCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context) {
         log.info("handling {}", cmd);
-        apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getType()));
+        apply(new CreatedCarEvent(cmd.getId(), cmd.getName(), cmd.getStatus(), cmd.getType()));
     }
 
     @CommandHandler

@@ -10,9 +10,9 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.eclipse.microprofile.lra.annotation.ParticipantStatus;
 import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.cinema.command.CreateTicketCmd;
-import org.mkralik.learning.axon.microservices.api.cinema.event.ChangedTicketStateEvent;
-import org.mkralik.learning.axon.microservices.api.cinema.event.CreatedTicketEvent;
+import org.mkralik.learning.axon.microservices.api.cinema.CreateTicketCmd;
+import org.mkralik.learning.axon.microservices.api.cinema.ChangedTicketStateEvent;
+import org.mkralik.learning.axon.microservices.api.cinema.CreatedTicketEvent;
 import org.mkralik.learning.lra.axon.api.command.LRACompensateCommand;
 import org.mkralik.learning.lra.axon.api.command.LRACompleteCommand;
 
@@ -33,7 +33,7 @@ public class Ticket {
 
     @CommandHandler
     public Ticket(CreateTicketCmd cmd, @MetaDataValue(LRA.LRA_HTTP_CONTEXT_HEADER) URI context) {
-        apply(new CreatedTicketEvent(cmd.getId(), cmd.getName(), cmd.getType()));
+        apply(new CreatedTicketEvent(cmd.getId(), cmd.getName(), cmd.getStatus(), cmd.getType()));
     }
 
     @CommandHandler

@@ -1,11 +1,11 @@
 package org.mkralik.learning.axon.microservices.hotel.command;
 
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;
-import org.mkralik.learning.axon.microservices.api.hotel.command.CompleteHotelCmd;
-import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
-import org.mkralik.learning.axon.microservices.api.hotel.event.ChangedHotelStateEvent;
-import org.mkralik.learning.axon.microservices.api.hotel.event.CreatedHotelEvent;
+import org.mkralik.learning.axon.microservices.api.hotel.CreateHotelCmd;
+import org.mkralik.learning.axon.microservices.api.hotel.CompensateHotelCmd;
+import org.mkralik.learning.axon.microservices.api.hotel.CompleteHotelCmd;
+import org.mkralik.learning.axon.microservices.api.hotel.ChangedHotelStateEvent;
+import org.mkralik.learning.axon.microservices.api.hotel.CreatedHotelEvent;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
@@ -32,7 +32,7 @@ public class Hotel {
     @CommandHandler
     public Hotel(CreateHotelCmd cmd) {
         log.debug("handling {}", cmd);
-        apply(new CreatedHotelEvent(cmd.getId(), cmd.getName(), cmd.getType(), cmd.getCarsId()));
+        apply(new CreatedHotelEvent(cmd.getId(), cmd.getName(), cmd.getStatus(), cmd.getType(), cmd.getSubBookingsId()));
     }
 
     @CommandHandler
