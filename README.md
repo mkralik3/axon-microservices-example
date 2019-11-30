@@ -1,6 +1,6 @@
-# Axon LRA microservices example
+# LRA Axon connector quickstart
 
-This project demonstrating usage of [Axon LRA connector](https://github.com/mkralik3/lra-axon-connector) in Axon based services. Thanks to that, the Axon Aggregates can join the active LRA context and they can be managed by LRA coordinator. 
+This project demonstrating usage of [LRA Axon connector](https://github.com/mkralik3/lra-axon-connector) in Axon based services. Thanks to that, the Axon Aggregates can join the active LRA context and they can be managed by LRA coordinator. 
 ![GitHub Logo](./img/axonLraDiagramFullQuickstart.png)
 
 ### USE CASE
