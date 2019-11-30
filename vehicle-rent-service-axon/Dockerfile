@@ -2,7 +2,7 @@ FROM openjdk:8u222-jre
 
 VOLUME /tmp
 
-ARG JAR_FILE=target/vehicle-rent-service-1.0-SNAPSHOT.jar
+ARG JAR_FILE=target/vehicle-rent-service-1.0.jar
 
 ADD ${JAR_FILE} vehicle-service.jar
 
