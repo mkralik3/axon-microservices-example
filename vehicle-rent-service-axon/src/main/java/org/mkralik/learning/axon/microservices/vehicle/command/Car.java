@@ -1,11 +1,9 @@
 package org.mkralik.learning.axon.microservices.vehicle.command;
 
-import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.annotation.MetaDataValue;
 import org.eclipse.microprofile.lra.annotation.ParticipantStatus;
 import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.mkralik.learning.axon.microservices.api.Booking;
-import org.mkralik.learning.axon.microservices.api.cinema.command.CreateTicketCmd;
 import org.mkralik.learning.axon.microservices.api.vehicle.command.CreateCarCmd;
 import org.mkralik.learning.axon.microservices.api.vehicle.event.ChangedCarStateEvent;
 import org.mkralik.learning.axon.microservices.api.vehicle.event.CreatedCarEvent;
@@ -43,7 +41,7 @@ public class Car {
 
     @CommandHandler
     public ParticipantStatus handle(LRACompensateCommand cmd) {
-        log.debug("Someone wants to compensate {}", cmd);
+        log.debug("Someone wants to compensate car {}", cmd);
         //do some validation
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CANCELLED));
         return ParticipantStatus.Compensated;
@@ -51,7 +49,7 @@ public class Car {
 
     @CommandHandler
     public ParticipantStatus handle(LRACompleteCommand cmd) {
-        log.debug("Someone wants to complete {}", cmd);
+        log.debug("Someone wants to complete car {}", cmd);
         //do some validation
         apply(new ChangedCarStateEvent(cmd.getId(), Booking.BookingStatus.CONFIRMING));
         //for demonstrating status
