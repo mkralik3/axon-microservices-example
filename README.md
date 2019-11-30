@@ -4,11 +4,15 @@ This project demonstrating usage of [Axon LRA connector](https://github.com/mkra
 ![GitHub Logo](./img/axonLraDiagramFullQuickstart.png)
 
 ### USE CASE
+The quickstart consists of five services that represent reservation systems. 
+It represents a business process that books a trip that consists of flight and hotel reservations. The hotel reservation is extended with making hotel's car reservation and a cinema ticket reservation.
+The booking trip service is the leading service where the LRA is started.
 
-[TBD] 
-
-### Project structure
+#### Project structure
 ![GitHub Logo](./img/quickstartArch.png)
+
+#### Sequence diagram
+![GitHub Logo](./img/quckstartFullSequence.png)
 
 ##### API
 Package with the common API. The package contains all necessary Commands, Events and Queries use in Axon services. For simplified, the classes are provided in one Kotlin file.
@@ -60,6 +64,11 @@ mvn clean install
  ```
 ##### 3a. Set up via Docker compose
 First, it is needed to copy generated Thorntail services (jar files) from [Narayana quickstart](https://github.com/jbosstm/quickstart/tree/master/rts/lra) to the particular folders `lraResources/flight` and `lraResources/trip`.
+```
+cp <NARAYANA_QUICKSTARTS>flight-service/target/lra-test-thorntail.jar <microservices-parent>/lraResources/flight/
+cp <NARAYANA_QUICKSTARTS>trip-controller/target/lra-test-thorntail.jar <microservices-parent>/lraResources/trip/
+```
+
 After that, run the command:
 ```
 docker-compose up
@@ -77,14 +86,18 @@ docker logs -f vehlicle
 docker logs -f cinema
 ```
 #### 3b. Set up manually
-[TBD]
 ```
 docker run -it --rm --name my-axon-server -p 8024:8024 -p 8124:8124 axoniq/axonserver:4.2
+java -jar <lraCoordinator> -Dswarm.http.port=8080
+java -jar lraResources/flight/lra-test-thorntail.jar -Dswarm.http.port=8083 -Dlra.http.port=8080
+java -jar lraResources/trip/lra-test-thorntail.jar -Dswarm.http.port=8084 -Dlra.http.port=8080
 
+java -jar cinema-service-axon/target/cinema-service-1.0-SNAPSHOT.jar -Dlra.http.port=8080
+java -jar vehicle-rent-service-axon/target/vehicle-rent-service-1.0-SNAPSHOT.jar -Dlra.http.port=8080
+java -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true" -jar hotel-service-axon/target/hotel-service-1.0-SNAPSHOT.jar  -Dlra.http.port=8080 
 ```
 #### 4. Client Example
 ```
 mvn -f trip-client/pom.xml exec:java -Dservice.http.host="localhost" -Dservice.http.port=8084
 ```
 [TBD]
-

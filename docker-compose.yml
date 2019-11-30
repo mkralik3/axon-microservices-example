@@ -10,7 +10,7 @@ services:
       - "8124:8124"
 
   lra-coordinator:
-    image: jbosstm/lra-coordinator:5.9.8.Final
+    image: jbosstm/lra-coordinator:5.10.0.Final
     container_name: lra-coordinator
     ports:
       - "8080:8080"

@@ -38,7 +38,7 @@
         </dependency>
         <dependency>
             <groupId>org.mkralik.learning.lra.axon</groupId>
-            <artifactId>interceptor</artifactId>
+            <artifactId>lra-axon-interceptors</artifactId>
             <version>${axon.lra.version}</version>
         </dependency>
         <dependency>

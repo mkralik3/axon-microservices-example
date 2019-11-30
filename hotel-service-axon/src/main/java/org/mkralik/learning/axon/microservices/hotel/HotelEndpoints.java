@@ -3,9 +3,7 @@ package org.mkralik.learning.axon.microservices.hotel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.mkralik.learning.axon.microservices.api.Booking;
 import org.mkralik.learning.axon.microservices.api.cinema.command.CreateTicketCmd;
-import org.mkralik.learning.axon.microservices.api.cinema.query.TicketBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.vehicle.command.CreateCarCmd;
-import org.mkralik.learning.axon.microservices.api.vehicle.query.CarBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompensateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.command.CompleteHotelCmd;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +17,6 @@ import org.mkralik.learning.axon.microservices.api.hotel.command.CreateHotelCmd;
 import org.mkralik.learning.axon.microservices.api.hotel.query.AllHotelBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.hotel.query.HotelBookingSummaryQuery;
 import org.mkralik.learning.axon.microservices.api.vehicle.command.CreateVanCmd;
-import org.mkralik.learning.axon.microservices.api.vehicle.query.VanBookingSummaryQuery;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
