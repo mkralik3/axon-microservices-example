@@ -31,7 +31,7 @@ import java.util.Collection;
 import static org.eclipse.microprofile.lra.annotation.ws.rs.LRA.LRA_HTTP_CONTEXT_HEADER;
 
 @Service
-@Path("/hotel")
+@Path("/")
 @LRA(LRA.Type.SUPPORTS)
 @Slf4j
 public class HotelEndpoints {

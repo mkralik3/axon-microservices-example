@@ -39,14 +39,6 @@ Endpoints:
 
 # How to run
 
-###### Workaround for JBTM-3161
-```
-git clone https://github.com/jbosstm/narayana.git
-cd narayana/rts/lra
-git checkout 5.10.0.Final
-sed -i 's/LRAParticipantRegistry()/public LRAParticipantRegistry()/g' ./lra-proxy/api/src/main/java/io/narayana/lra/client/internal/proxy/nonjaxrs/LRAParticipantRegistry.java
-mvn clean install -DskipTest
-```
 ### 1. Build Axon LRA connector
 The services uses [Axon LRA connector](https://github.com/mkralik3/lra-axon-connector) to join into LRA. First, it is needs to add it to local repository.
 ```
@@ -78,19 +70,19 @@ During starting, the errors can appear in the log. It is due to the fact, that A
 
 
 ### 3b. Set up manually
-Each service run in a separate window, we will use the logs for the explanation use case.
+Each service should run in a separate window, we will use the logs for the explanation use case.
 ```
 docker run -it --rm --name my-axon-server -p 8024:8024 -p 8124:8124 axoniq/axonserver:4.2
 java -jar <lraCoordinator> -Dswarm.http.port=8080
 java -jar lraResources/flight/lra-test-thorntail.jar -Dswarm.http.port=8083 -Dlra.http.port=8080
 java -jar lraResources/trip/lra-test-thorntail.jar -Dswarm.http.port=8084 -Dlra.http.port=8080
-java -jar cinema-service-axon/target/cinema-service-1.0-SNAPSHOT.jar -Dlra.http.port=8080
-java -jar vehicle-rent-service-axon/target/vehicle-rent-service-1.0-SNAPSHOT.jar -Dlra.http.port=8080
-java -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true" -jar hotel-service-axon/target/hotel-service-1.0-SNAPSHOT.jar  -Dlra.http.port=8080 
+java -jar cinema-service-axon/target/cinema-service-1.0.jar -Dlra.http.port=8080
+java -jar vehicle-rent-service-axon/target/vehicle-rent-service-1.0.jar -Dlra.http.port=8080
+java -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true" -jar hotel-service-axon/target/hotel-service-1.0.jar  -Dlra.http.port=8080 
 ```
 ## 4. Client Example
 
-Open logs for every service. The containers in the docker are named so for shows logs use:
+Open logs for every service. The containers in the docker are named so for showing logs use:
 ```
 docker logs -f lra-coordinator
 docker logs -f flight

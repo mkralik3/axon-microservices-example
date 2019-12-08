@@ -17,7 +17,7 @@
         <spring.boot.version>2.1.8.RELEASE</spring.boot.version>
         <axon.version>4.2</axon.version>
 
-        <narayana.version>5.10.0.Final</narayana.version>
+        <narayana.version>5.10.1.Final</narayana.version>
         <axon.lra.version>1.0</axon.lra.version>
 
         <lombok.version>1.18.8</lombok.version>

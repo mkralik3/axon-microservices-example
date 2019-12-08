@@ -17,6 +17,6 @@ logging:
         learning:
           axon:
             microservices:
-              cinema: debug
+              hotel: debug
           lra:
             axon: debug
